@@ -22,4 +22,6 @@ urlpatterns = [
     path('auth/', include('auth_app.urls')),
     path('token/', token_obtain_pair),
     path('refresh/', token_refresh),
+    
+    path('auth/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]

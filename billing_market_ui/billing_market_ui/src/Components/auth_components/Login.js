@@ -14,6 +14,7 @@ function Login() {
     sessionStorage.setItem('access_token',resp.data.access);
     sessionStorage.setItem('refresh_token',resp.data.refresh);
     sessionStorage.setItem('user_role',resp.data.role);
+    
     const user_role = resp.data.role
 
     if(user_role === 'CEO'){
@@ -42,7 +43,7 @@ function Login() {
     <>
       <form style={{margin:'100px'}} className='container bg-light' onSubmit={handleSubmit(saveData)}>
         <br/>
-        <center><u><h1>LOGIN FORM</h1></u></center>
+        <center><u><h1 style={{color:'red'}}>LOGIN FORM</h1></u></center>
         <br/>
         <label htmlFor='un'>Username</label>
         <input id='un' type='text' className='form-control' {...register('username',

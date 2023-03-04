@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'report_app',
     'sales_app',
     'stocks_app',
+     'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [

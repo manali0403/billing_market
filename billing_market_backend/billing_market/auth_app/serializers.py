@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import EmployeeUser
+from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -12,6 +13,29 @@ class EmployeeUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return EmployeeUser.objects.create_user(**validated_data)
+    
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    def validate(self,user):
+        data = super().validate(user)
+        print(self.user)
+        data['role'] = self.user.user_role
+        return data
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+
+   
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    
+    
+
+
+
 
     def validate_password(self, value):
         if len(value) < 8 or len(value) > 16:
@@ -25,14 +49,14 @@ class EmployeeUserSerializer(serializers.ModelSerializer):
         return value
     
     def validate_first_name(self, value):
-        # if len(value) < 3 or len(value) > 20:
-        #     raise serializers.ValidationError(' must contain 3 to 20 charecters')
-        # if not value.istitle():
-        #     raise serializers.ValidationError('first letter must be capital')
-        import re 
-        pattern = '^[A-Z]{1}[a-z]{2,19}$'
-        if not re.match(pattern, value):
-            raise serializers.ValidationError("Please enter first name that starts with Capital letter and must be between 3 to 20 characters")
+        if len(value) < 3 or len(value) > 20:
+            raise serializers.ValidationError(' must contain 3 to 20 charecters')
+        if not value.istitle():
+            raise serializers.ValidationError('first letter must be capital')
+        # import re 
+        # pattern = '^[A-Z]{1}[a-z]{2,19}$'
+        # if not re.match(pattern, value):
+        #     raise serializers.ValidationError("Please enter first name that starts with Capital letter and must be between 3 to 20 characters")
         return value
 
     def validate_last_name(self, value):
@@ -62,10 +86,4 @@ class EmployeeUserSerializer(serializers.ModelSerializer):
         return value
 
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-
-    def validate(self,user):
-        data = super().validate(user)
-        print(self.user)
-        data['role'] = self.user.user_role
-        return data
+ 
